@@ -11,7 +11,6 @@ import ReferenceTypeList from './SideView/ReferenceTypeList';
 import MainViews from './MainView/MainViews';
 import { Button, Header, Form, Icon, Sidebar, Menu } from 'semantic-ui-react';
 import "./Home.css";
-import Logo from "./LyricsFirstLogoCapture.png"
 
 class Home extends Component {
   state = {
@@ -175,6 +174,7 @@ class Home extends Component {
 
             <div className="makeMainBig"></div>
             <MainViews
+              user={this.props.user}
               words={this.state.words}
               updateWords={this.updateWords}
               songs={this.state.songs}

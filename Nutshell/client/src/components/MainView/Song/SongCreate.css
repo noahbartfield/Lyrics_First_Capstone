@@ -1,5 +1,5 @@
 .songTitleCreate {
-    height: 100px;
+    height: 90px;
     width: 45%;
     font-size: 50px;
     text-align: center;
@@ -21,4 +21,17 @@
 .saveButton {
     margin: 10px;
     background: none !important;
+}
+
+
+.lyricsWithRhymes {
+    display: flex;
+    justify-content: space-around;
+}
+
+.rhymingContainer {
+    text-align: left;
+    overflow: scroll;
+    height: 355px !important;
+    min-width: 100px !important;
 }

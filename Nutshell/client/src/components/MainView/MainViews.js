@@ -41,6 +41,7 @@ export default class MainViews extends Component {
             return <SongCreate
               songs={this.props.songs}
               updateSongs={this.props.updateSongs}
+              updateWords={this.props.updateWords}
               {...props} />
           }} />
           <Route exact path="/home/words/:wordId(\d+)" render={(props) => {
@@ -107,6 +108,8 @@ export default class MainViews extends Component {
           }} />
           <Route exact path="/home/lyricsFirst" render={(props) => {
             return <HomeView
+              songs={this.props.songs}
+              user={this.props.user}
               {...props} />
           }} />
         </div>

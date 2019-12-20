@@ -2,9 +2,25 @@ import { createAuthHeaders } from '../API/userManager';
 
 const baseUrl = '/api/v1';
 
+export const getAllWords = () => {
+    const authHeader = createAuthHeaders()
+    return fetch(`${baseUrl}/words/all`, {
+        headers: authHeader
+    })
+    .then(response => response.json())
+};
+
 export const getWords = () => {
     const authHeader = createAuthHeaders()
     return fetch(`${baseUrl}/words`, {
+        headers: authHeader
+    })
+    .then(response => response.json())
+};
+
+export const getDataWords = () => {
+    const authHeader = createAuthHeaders()
+    return fetch(`${baseUrl}/words/data`, {
         headers: authHeader
     })
     .then(response => response.json())
@@ -21,6 +37,16 @@ export const getWordById = (id) => {
 export const createWord = (word) => {
     const authHeader = createAuthHeaders()
     return fetch(`${baseUrl}/words/create`, {
+        headers: authHeader,
+        method: 'POST',
+        body: JSON.stringify(word)
+    })
+    .then(response => response.json())
+}
+
+export const createDataWord = (word) => {
+    const authHeader = createAuthHeaders()
+    return fetch(`${baseUrl}/words/createData`, {
         headers: authHeader,
         method: 'POST',
         body: JSON.stringify(word)
