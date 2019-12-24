@@ -1,10 +1,19 @@
 import { createAuthHeaders } from '../API/userManager';
 
-export const getAllUsers = () => {
+const baseUrl = '/api/v1';
 
-}
+export const getListOfUsers = (q) => {
+    return fetch(`${baseUrl}/users?q=${q}`)
+    .then(response => response.json())
+  };
     
 
-export const addCowriter = (id, userId) => {
-
+export const addCowriter = (cowriterSongRel) => {
+    const authHeader = createAuthHeaders()
+    return fetch(`${baseUrl}/cowriterSongRels/create`, {
+        headers: authHeader,
+        method: 'POST',
+        body: JSON.stringify(cowriterSongRel)
+    })
+    .then(response => response.json())
 }

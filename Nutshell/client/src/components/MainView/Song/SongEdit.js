@@ -3,11 +3,12 @@ import { Link, Route } from 'react-router-dom';
 import { getSongs, getSongById, editSong } from '../../../API/songManager';
 import { deleteWord, createDataWord, getAllWords } from '../../../API/wordManager';
 import { getAllRhymingWords } from '../../../API/thirdPartyApiManager';
-import { addCowriter } from '../../../API/cowriterManager';
+import { getListOfUsers, addCowriter } from '../../../API/cowriterManager';
 import { Button, Icon, Modal } from 'semantic-ui-react'
 import { debounce } from "debounce";
 import "./SongEdit.css"
 import { getSuggestions } from "./GetSuggestionsFunc"
+import AddCowriterModal from './AddCowriterModal';
 
 class SongEdit extends Component {
 
@@ -66,9 +67,6 @@ class SongEdit extends Component {
         })
     }
 
-    // handleConnect = id => {
-    //     addCowriter(id)
-    // }
 
     // onChange = (event, { newValue }) => {
     //     this.setState({
@@ -123,8 +121,11 @@ class SongEdit extends Component {
                         <Button className="saveButton ui massive" onClick={this.handleSubmit}><Icon name="save" /></Button>
                     </div>
                     <Modal onClose={this.closeConnectModal} onOpen={this.openConnectModal} open={this.state.showConnectModal} trigger={<Button className="showButton connectButton ui massive"><Icon name="user" /></Button>} closeIcon>
-                        <Modal.Header className="connectModal">Add Cowriter to "{this.state.title}"?</Modal.Header>
-                        {/* <Button attached onClick={() => this.handleConnect(songId)}>Add</Button> */}
+                        <AddCowriterModal
+                        closeConnectModal={this.closeConnectModal}
+                        songId={this.state.songId}
+                        title={this.state.title}
+                        />
                     </Modal>
                 </div>
                 <div className="lyricsWithRhymes">

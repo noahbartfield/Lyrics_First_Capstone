@@ -47,12 +47,20 @@ namespace Capstone.Routes.V1
             public const string PostTitle = Base + "/Titles/Create";
             public const string DeleteTitle = Base + "/Titles/Delete/{id}";
         }
+        public static class Cowriter
+        {
+            public const string PostCowriter = Base + "/CowriterSongRels/Create";
+            public const string DeleteCowriter = Base + "/CowriterSongRels/Delete/{id}";
+        }
 
         public static class User
         {
             public const string Login = Base + "/Auth/Login";
             public const string Register = Base + "/Auth/Register";
             public const string Refresh = Base + "/Auth/Refresh";
+            public const string GetUsers = Base + "/Users";
         }
+
+        
     }
 }

@@ -129,6 +129,7 @@ namespace Capstone.Services
             return await _context.ApplicationUsers.FindAsync(id);
         }
 
+
         private async Task<(bool IsValid, string ErrorMessage, RefreshToken refreshToken)> ValidateExpiredTokenAsync(ClaimsPrincipal principal)
         {
             if (principal == null)
