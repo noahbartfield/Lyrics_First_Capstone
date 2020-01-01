@@ -3,12 +3,14 @@ import { Link, Route } from 'react-router-dom';
 import { getSongs, getSongById, editSong } from '../../../API/songManager';
 import { deleteWord, createDataWord, getAllWords } from '../../../API/wordManager';
 import { getAllRhymingWords } from '../../../API/thirdPartyApiManager';
-import { getListOfUsers, addCowriter } from '../../../API/cowriterManager';
+import { getCowriters } from '../../../API/cowriterManager';
 import { Button, Icon, Modal } from 'semantic-ui-react'
 import { debounce } from "debounce";
 import "./SongEdit.css"
 import { getSuggestions } from "./GetSuggestionsFunc"
 import AddCowriterModal from './AddCowriterModal';
+
+let cowriters = []
 
 class SongEdit extends Component {
 
@@ -22,18 +24,30 @@ class SongEdit extends Component {
         lineArray: [],
         aaVisable: false,
         abVisable: false,
-        suggestions: []
+        suggestions: [],
+        cowriterNamew: []
     }
 
     componentDidMount() {
         const songId = parseInt(this.props.match.params.songId)
         getSongById(songId).then(song => this.setState({ title: song.title, lyrics: song.lyrics, songId: songId }))
+        this.findCowriters()
     }
 
     handleFieldChange = event => {
         const stateToChange = {}
         stateToChange[event.target.id] = event.target.value
         this.setState(stateToChange)
+    }
+
+    findCowriters = () => {
+        const songId = parseInt(this.props.match.params.songId)
+        console.log(songId)
+        getCowriters(songId).then(cs => {
+            cs.map(csr => {
+                cowriters.push(csr.userName)
+            });
+        })
     }
 
     handleSubmit = event => {
@@ -66,13 +80,6 @@ class SongEdit extends Component {
             this.props.history.push(`/home/songs/${this.state.songId}`)
         })
     }
-
-
-    // onChange = (event, { newValue }) => {
-    //     this.setState({
-    //         value: newValue
-    //     });
-    // };
 
     onSuggestionsFetchRequested = debounce(() => {
         const wordArray = this.state.lyrics.split(" ")
@@ -115,6 +122,16 @@ class SongEdit extends Component {
         return (
             <>
                 <input className="songTitle" type="text" id="title" autoComplete="off" onChange={this.handleFieldChange} value={this.state.title}></input>
+                <p></p>
+                Cowriters:
+                    {cowriters.map(c => {
+                        console.log(c)
+                        return (
+                        <div key={Math.random()}>
+                            {c}
+                        </div>
+                        )
+                    })}
                 <p></p>
                 <div className="saveAndConnect">
                     <div>

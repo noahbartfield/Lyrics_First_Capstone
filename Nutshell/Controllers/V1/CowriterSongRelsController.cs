@@ -9,6 +9,7 @@ using Capstone.Data;
 using Capstone.Models.Data;
 using Capstone.Routes.V1;
 using Microsoft.AspNetCore.Authorization;
+using Capstone.Models.ViewModels;
 
 namespace Capstone.Controllers.V1
 {
@@ -21,6 +22,25 @@ namespace Capstone.Controllers.V1
         public CowriterSongRelsController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        [HttpGet(Api.Cowriter.GetCowriters)]
+        public async Task<ActionResult<IEnumerable<CowriterNameViewModel>>> GetCowriters(int id)
+        {
+            List<CowriterSongRel> cowriters = await _context.CowriterSongRels.Include(cs => cs.User).Where(cs => cs.SongId == id).ToListAsync();
+            List<CowriterNameViewModel> cowriterVMs = new List<CowriterNameViewModel>();
+            foreach (CowriterSongRel cs in cowriters)
+            {
+                CowriterNameViewModel cowriter = new CowriterNameViewModel()
+                {                   
+                    SongId = cs.SongId,
+                    UserId = cs.UserId,
+                    UserName = cs.User.UserName
+                };
+                cowriterVMs.Add(cowriter);
+            }
+
+            return cowriterVMs;
         }
 
         [HttpPost(Api.Cowriter.PostCowriter)]

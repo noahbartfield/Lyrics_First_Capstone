@@ -4,9 +4,16 @@ const baseUrl = '/api/v1';
 
 export const getListOfUsers = (q) => {
     return fetch(`${baseUrl}/users?q=${q}`)
-    .then(response => response.json())
-  };
-    
+        .then(response => response.json())
+};
+
+export const getCowriters = (id) => {
+    const authHeader = createAuthHeaders()
+    return fetch(`${baseUrl}/CowriterSongRels/${id}`, {
+        headers: authHeader
+    })
+        .then(response => response.json())
+};
 
 export const addCowriter = (cowriterSongRel) => {
     const authHeader = createAuthHeaders()
@@ -15,5 +22,5 @@ export const addCowriter = (cowriterSongRel) => {
         method: 'POST',
         body: JSON.stringify(cowriterSongRel)
     })
-    .then(response => response.json())
+        .then(response => response.json())
 }
