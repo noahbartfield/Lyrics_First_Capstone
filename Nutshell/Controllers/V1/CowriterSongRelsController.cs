@@ -55,18 +55,21 @@ namespace Capstone.Controllers.V1
 
         // DELETE: api/Songs/5
         [HttpDelete(Api.Cowriter.DeleteCowriter)]
-        public async Task<ActionResult<CowriterSongRel>> DeleteCowriter(int id)
+        public  ActionResult<CowriterSongRel> DeleteCowriter(string userId, int songId)
         {
-            var cowriterSongRel = await _context.CowriterSongRels.FindAsync(id);
+            List<CowriterSongRel> cowriterSongRel = _context.CowriterSongRels.Where(cs => cs.UserId == userId && cs.SongId == songId).ToList();
+            
             if (cowriterSongRel == null)
             {
                 return NotFound();
             }
+            else
+            {
+                _context.CowriterSongRels.Remove(cowriterSongRel[0]);
+                _context.SaveChangesAsync();
 
-            _context.CowriterSongRels.Remove(cowriterSongRel);
-            await _context.SaveChangesAsync();
-
-            return cowriterSongRel;
+                return cowriterSongRel[0];
+            }
         }
     }
 }

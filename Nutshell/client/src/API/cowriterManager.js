@@ -33,3 +33,12 @@ export const addCowriter = (cowriterSongRel) => {
     })
         .then(response => response.json())
 }
+
+export const deleteCowriter = (userId, songId) => {
+    const authHeader = createAuthHeaders()
+    return fetch(`${baseUrl}/cowriterSongRels/delete/${userId}/${songId}`, {
+        headers: authHeader,
+        method: 'DELETE'
+    }
+)
+}

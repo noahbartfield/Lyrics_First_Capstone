@@ -1,0 +1,11 @@
+.deleteButton {
+    color: red !important;
+    padding: 5px !important;
+    margin: 0px !important;
+}
+
+.preDeleteButton {
+    background: none !important;
+    padding: 5px !important;
+    margin: 0px !important;
+}
