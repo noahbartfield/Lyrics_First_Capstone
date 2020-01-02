@@ -19,8 +19,10 @@ class AddCowriterModal extends Component {
     }
 
     searchForFriend = (q) => {
+        const user = JSON.parse(localStorage.getItem('user'))
         getListOfUsers(q.target.value).then(users => {
-            this.setState({ users: users })
+            const filteredUsers = users.filter(u => u.username !== user.username && !this.props.cowriterNames.includes(u.username))
+            this.setState({ users: filteredUsers })
         })
     }
 
@@ -28,6 +30,7 @@ class AddCowriterModal extends Component {
     handleConnect = id => {
         const cowriterSongRel = {songId: this.props.songId, userId: id}
         addCowriter(cowriterSongRel)
+            .then(() => this.props.findCowriters())
         this.props.closeConnectModal()
     }
 

@@ -60,6 +60,7 @@ namespace Capstone.Routes.V1
             public const string Register = Base + "/Auth/Register";
             public const string Refresh = Base + "/Auth/Refresh";
             public const string GetUsers = Base + "/Users";
+            public const string GetUser = Base + "/Users/{id}";
         }
 
         

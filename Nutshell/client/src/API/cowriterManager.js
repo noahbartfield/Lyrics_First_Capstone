@@ -7,6 +7,15 @@ export const getListOfUsers = (q) => {
         .then(response => response.json())
 };
 
+export const getSpecificUser = (id) => {
+    const authHeader = createAuthHeaders()
+    return fetch(`${baseUrl}/users/${id}`, {
+        headers: authHeader
+    })
+        .then(response => response.json())
+}
+
+
 export const getCowriters = (id) => {
     const authHeader = createAuthHeaders()
     return fetch(`${baseUrl}/CowriterSongRels/${id}`, {

@@ -41,6 +41,24 @@ namespace Capstone.Controllers.V1
             return listOfUsers;
         }
 
+        [HttpGet(Api.User.GetUser)]
+        public ApplicationUserSearchViewModel GetUser(string Id)
+        {
+            var user = _context.ApplicationUsers.Select(u => new { u.Id, u.UserName }).Where(u => u.Id == Id).ToList();
+            List<ApplicationUserSearchViewModel> listOfOneUser = new List<ApplicationUserSearchViewModel>();
+            foreach (var au in user)
+            {
+                ApplicationUserSearchViewModel newAU = new ApplicationUserSearchViewModel
+                {
+                    Id = au.Id,
+                    Username = au.UserName
+                };
+                listOfOneUser.Add(newAU);
+            }
+            
+            return listOfOneUser[0];
+        }
+
         [HttpPost(Api.User.Register)]
         public async Task<IActionResult> Register([FromBody] UserRegistrationViewModel user)
         {

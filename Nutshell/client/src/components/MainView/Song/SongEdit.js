@@ -3,14 +3,14 @@ import { Link, Route } from 'react-router-dom';
 import { getSongs, getSongById, editSong } from '../../../API/songManager';
 import { deleteWord, createDataWord, getAllWords } from '../../../API/wordManager';
 import { getAllRhymingWords } from '../../../API/thirdPartyApiManager';
-import { getCowriters } from '../../../API/cowriterManager';
+import { getCowriters, getSpecificUser } from '../../../API/cowriterManager';
 import { Button, Icon, Modal } from 'semantic-ui-react'
 import { debounce } from "debounce";
 import "./SongEdit.css"
 import { getSuggestions } from "./GetSuggestionsFunc"
 import AddCowriterModal from './AddCowriterModal';
+import { isEqual } from 'lodash'
 
-let cowriters = []
 
 class SongEdit extends Component {
 
@@ -25,13 +25,37 @@ class SongEdit extends Component {
         aaVisable: false,
         abVisable: false,
         suggestions: [],
-        cowriterNamew: []
+        cowriterNames: [],
+        writerName: "",
+        userId: ""
     }
 
     componentDidMount() {
         const songId = parseInt(this.props.match.params.songId)
-        getSongById(songId).then(song => this.setState({ title: song.title, lyrics: song.lyrics, songId: songId }))
-        this.findCowriters()
+        getSongById(songId).then(song => this.setState({ title: song.title, lyrics: song.lyrics, songId: songId, userId: song.userId }))
+        .then(() => this.findWriter()).then(() => this.findCowriters())
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const songId = parseInt(this.props.match.params.songId)
+        const oldPropSongId = parseInt(prevProps.match.params.songId)
+        const cowriterArray = this.state.cowriterNames
+        const oldCowriterArray = prevState.cowriterNames
+        const writerName = this.state.writerName
+        const oldWriterName = prevState.writerName
+        if (oldPropSongId !== songId) {
+            console.log("finding song in componentDidUpdate")
+            getSongById(songId).then(song => this.setState({ title: song.title, lyrics: song.lyrics, songId: songId, userId: song.userId }))
+                .then(() => this.findWriter()).then(() => this.findCowriters())
+        }
+        if (!isEqual(oldCowriterArray, cowriterArray)) {
+            console.log("finding cowriters in componentDidUpdate")
+            this.findCowriters()
+        }
+        if (!isEqual(oldWriterName, writerName)) {
+            console.log("finding writerName in componentDidUpdate")
+            this.findWriter()
+        }
     }
 
     handleFieldChange = event => {
@@ -44,9 +68,18 @@ class SongEdit extends Component {
         const songId = parseInt(this.props.match.params.songId)
         console.log(songId)
         getCowriters(songId).then(cs => {
-            cs.map(csr => {
-                cowriters.push(csr.userName)
+            const names = cs.map(csr => {
+                return csr.userName
             });
+            this.setState({ cowriterNames: names })
+        })
+    }
+
+    findWriter = () => {
+        const songId = parseInt(this.props.match.params.songId)
+        console.log(songId)
+        getSpecificUser(this.state.userId).then(user => {
+            this.setState({ writerName: user.username })
         })
     }
 
@@ -119,17 +152,21 @@ class SongEdit extends Component {
 
     render() {
         const songId = parseInt(this.props.match.params.songId)
+        const user = JSON.parse(localStorage.getItem('user'))
         return (
             <>
                 <input className="songTitle" type="text" id="title" autoComplete="off" onChange={this.handleFieldChange} value={this.state.title}></input>
                 <p></p>
-                Cowriters:
-                    {cowriters.map(c => {
+                Written By:
+                    <span className="writer">
+                        {` ${this.state.writerName}*`}
+                    </span>
+                    {this.state.cowriterNames.map(c => {
                         console.log(c)
                         return (
-                        <div key={Math.random()}>
-                            {c}
-                        </div>
+                        <span className="writer" key={Math.random()}>
+                            {` | ${c}`}
+                        </span>
                         )
                     })}
                 <p></p>
@@ -137,13 +174,15 @@ class SongEdit extends Component {
                     <div>
                         <Button className="saveButton ui massive" onClick={this.handleSubmit}><Icon name="save" /></Button>
                     </div>
-                    <Modal onClose={this.closeConnectModal} onOpen={this.openConnectModal} open={this.state.showConnectModal} trigger={<Button className="showButton connectButton ui massive"><Icon name="user" /></Button>} closeIcon>
+                    {user.username === this.state.writerName && <Modal onClose={this.closeConnectModal} onOpen={this.openConnectModal} open={this.state.showConnectModal} trigger={<Button className="showButton connectButton ui massive"><Icon name="user" /></Button>} closeIcon>
                         <AddCowriterModal
                         closeConnectModal={this.closeConnectModal}
                         songId={this.state.songId}
                         title={this.state.title}
+                        cowriterNames={this.state.cowriterNames}
+                        findCowriters={this.findCowriters}
                         />
-                    </Modal>
+                    </Modal>}
                 </div>
                 <div className="lyricsWithRhymes">
                     {this.state.rhymingWords &&
