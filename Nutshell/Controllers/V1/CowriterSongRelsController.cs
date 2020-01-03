@@ -71,5 +71,26 @@ namespace Capstone.Controllers.V1
                 return cowriterSongRel[0];
             }
         }
+        
+        [HttpDelete(Api.Cowriter.DeleteCowriters)]
+        public  ActionResult<List<CowriterSongRel>> DeleteCowriters(int songId)
+        {
+            List<CowriterSongRel> cowriterSongRels = _context.CowriterSongRels.Where(cs => cs.SongId == songId).ToList();
+            
+            if (cowriterSongRels.Count == 0)
+            {
+                return NotFound();
+            }
+            else
+            {
+                foreach (CowriterSongRel cs in cowriterSongRels)
+                {
+                    _context.CowriterSongRels.Remove(cs);
+                    _context.SaveChangesAsync();
+                }
+
+                return Ok(cowriterSongRels);
+            }
+        }
     }
 }

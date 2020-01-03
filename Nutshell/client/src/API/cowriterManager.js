@@ -42,3 +42,12 @@ export const deleteCowriter = (userId, songId) => {
     }
 )
 }
+
+export const deleteCowriters = (songId) => {
+    const authHeader = createAuthHeaders()
+    return fetch(`${baseUrl}/cowriterSongRels/delete/${songId}`, {
+        headers: authHeader,
+        method: 'DELETE'
+    }
+)
+}

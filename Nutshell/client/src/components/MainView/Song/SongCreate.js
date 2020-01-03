@@ -47,8 +47,10 @@ class SongCreate extends Component {
                 }
                 createDataWord(newWord)
             });
-            this.props.updateWords()
             this.props.history.push(`/home/songs/${s[0].id}`)
+        })
+        .then(() => {
+            this.props.updateWords()
         })
     }
    
@@ -65,7 +67,6 @@ class SongCreate extends Component {
     }, 2000);
 
     handleRhyming = debounce(event => {
-        event.preventDefault()
         if (this.state.lyrics.includes("\n")) {
             const lineArray = this.state.lyrics.split("\n")
             const lastLineIndex = lineArray.length - 2

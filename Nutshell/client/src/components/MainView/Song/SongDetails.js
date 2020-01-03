@@ -2,7 +2,7 @@ import React, { Component, FormattedMessage } from 'react';
 import { Link, Route } from 'react-router-dom';
 import { getSongs, getSongById, deleteSong } from '../../../API/songManager';
 import { getAllWords, deleteWord } from '../../../API/wordManager';
-import { getCowriters, getSpecificUser } from '../../../API/cowriterManager';
+import { getCowriters, getSpecificUser, deleteCowriters } from '../../../API/cowriterManager';
 import { Button, Modal, Icon } from 'semantic-ui-react'
 import "./SongDetails.css"
 import { isEqual } from 'lodash'
@@ -16,7 +16,7 @@ class SongDetails extends Component {
         cowriterNames: [],
         writerName: "",
         userId: "",
-        showDeleteModal: false
+        deleteVisable: false
     }
 
     componentDidMount() {
@@ -78,15 +78,30 @@ class SongDetails extends Component {
                 deleteWord(word.id)
             });
         })
-        deleteSong(id)
-            .then(() => {
-                this.props.updateSongs()
+        {
+            this.state.cowriterNames.length !== 0
+            ? deleteCowriters(id).then(() => {
+                deleteSong(id)
+                    .then(() => {
+                        this.props.updateSongs()
+                    })
             })
+            : deleteSong(id)
+                .then(() => {
+                    this.props.updateSongs()
+                })
+        }
         this.props.history.push(`/home/lyricsFirst`)
+        this.setState({ deleteVisable: false })
     }
 
-    openDeleteModal = () => this.setState({ showDeleteModal: true })
-    closeDeleteModal = () => this.setState({ showDeleteModal: false })
+    handlePreDeleteSong = () => {
+        this.setState({ deleteVisable: true })
+    }
+
+    handleCancelDeleteSong = () => {
+        this.setState({ deleteVisable: false })
+    }
 
     render() {
         const songId = parseInt(this.props.match.params.songId)
@@ -111,10 +126,19 @@ class SongDetails extends Component {
                 })}
                 <p></p>
                 <Button className="editButton" onClick={() => { this.props.history.push(`/home/songs/${songId}/edit`) }}><Icon name="edit" /></Button>
-                {user.username === this.state.writerName && <Modal onClose={this.closeDeleteModal} onOpen={this.openDeleteModal} open={this.state.showDeleteModal} trigger={<Button className="deleteButton"><Icon name="trash alternate outline" /></Button>} closeIcon>
-                    <Modal.Header className="deleteModal">Delete "{this.state.title}"?</Modal.Header>
-                    <Button attached onClick={() => this.handleDeleteSong(songId)}>Delete</Button>
-                </Modal>}
+                <span>
+                    {this.state.deleteVisable === false
+                        ? <Button className="preDeleteSongButton" onClick={() => this.handlePreDeleteSong()}><Icon name="trash" /></Button>
+                        :
+                        <>
+                            <span>
+                                <Button className="preDeleteSongButton" onClick={() => this.handleCancelDeleteSong()}><Icon name="cancel" /></Button>
+                            </span>
+                            <span>
+                                <Button className="deleteSongButton" onClick={() => this.handleDeleteSong(songId)}><Icon name="trash" /></Button>
+                            </span>
+                        </>}
+                </span>
                 <div className="lyricsContainer">
                     <div></div>
                     <div className="lineBreaks songLyrics">

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link, Route } from 'react-router-dom';
 import { getSongs, getSongById } from '../API/songManager';
 import { getWords, getWordById } from '../API/wordManager';
 import { getTitles, getTitleById } from '../API/titleManager';
@@ -119,9 +120,11 @@ class Home extends Component {
               ? "delete"
               : "bars"} />
           </Button>
-          <div className="logoContainer">
+          <Link to={'/home/lyricsfirst'}>
+            <div className="logoContainer">
               <div className="logo">Lyrics | First</div>
             </div>
+          </Link>
         </nav>
         < Sidebar.Pushable >
           <Sidebar
