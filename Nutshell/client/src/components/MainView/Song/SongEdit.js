@@ -171,6 +171,7 @@ class SongEdit extends Component {
                         key={c.id}
                         cowriter={c}
                         findCowriters={this.findCowriters}
+                        writerName={this.state.writerName}
                     />
                 })}
                 <p></p>

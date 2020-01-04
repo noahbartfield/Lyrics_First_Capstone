@@ -52,7 +52,6 @@ namespace Capstone.Routes.V1
             public const string GetCowriters = Base + "/CowriterSongRels/{id}";
             public const string PostCowriter = Base + "/CowriterSongRels/Create";
             public const string DeleteCowriter = Base + "/CowriterSongRels/Delete/{userId}/{songId}";
-            public const string DeleteCowriters = Base + "/CowriterSongRels/Delete/{songId}";
         }
 
         public static class User

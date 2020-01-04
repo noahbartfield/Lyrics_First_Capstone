@@ -2,7 +2,7 @@ import React, { Component, FormattedMessage } from 'react';
 import { Link, Route } from 'react-router-dom';
 import { getSongs, getSongById, deleteSong } from '../../../API/songManager';
 import { getAllWords, deleteWord } from '../../../API/wordManager';
-import { getCowriters, getSpecificUser, deleteCowriters } from '../../../API/cowriterManager';
+import { getCowriters, getSpecificUser } from '../../../API/cowriterManager';
 import { Button, Modal, Icon } from 'semantic-ui-react'
 import "./SongDetails.css"
 import { isEqual } from 'lodash'
@@ -78,19 +78,11 @@ class SongDetails extends Component {
                 deleteWord(word.id)
             });
         })
-        {
-            this.state.cowriterNames.length !== 0
-            ? deleteCowriters(id).then(() => {
-                deleteSong(id)
-                    .then(() => {
-                        this.props.updateSongs()
-                    })
+        deleteSong(id)
+            .then(() => {
+                this.props.updateSongs()
             })
-            : deleteSong(id)
-                .then(() => {
-                    this.props.updateSongs()
-                })
-        }
+
         this.props.history.push(`/home/lyricsFirst`)
         this.setState({ deleteVisable: false })
     }
@@ -126,19 +118,21 @@ class SongDetails extends Component {
                 })}
                 <p></p>
                 <Button className="editButton" onClick={() => { this.props.history.push(`/home/songs/${songId}/edit`) }}><Icon name="edit" /></Button>
-                <span>
-                    {this.state.deleteVisable === false
-                        ? <Button className="preDeleteSongButton" onClick={() => this.handlePreDeleteSong()}><Icon name="trash" /></Button>
-                        :
-                        <>
-                            <span>
-                                <Button className="preDeleteSongButton" onClick={() => this.handleCancelDeleteSong()}><Icon name="cancel" /></Button>
-                            </span>
-                            <span>
-                                <Button className="deleteSongButton" onClick={() => this.handleDeleteSong(songId)}><Icon name="trash" /></Button>
-                            </span>
-                        </>}
-                </span>
+                {user.username == this.state.writerName &&
+                    <span>
+                        {this.state.deleteVisable === false
+                            ? <Button className="preDeleteSongButton" onClick={() => this.handlePreDeleteSong()}><Icon name="trash" /></Button>
+                            :
+                            <>
+                                <span>
+                                    <Button className="preDeleteSongButton" onClick={() => this.handleCancelDeleteSong()}><Icon name="cancel" /></Button>
+                                </span>
+                                <span>
+                                    <Button className="deleteSongButton" onClick={() => this.handleDeleteSong(songId)}><Icon name="trash" /></Button>
+                                </span>
+                            </>}
+                    </span>
+                }
                 <div className="lyricsContainer">
                     <div></div>
                     <div className="lineBreaks songLyrics">

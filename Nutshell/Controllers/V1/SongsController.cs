@@ -116,6 +116,16 @@ namespace Capstone.Controllers.V1
         [HttpDelete(Api.Songs.DeleteSong)]
         public async Task<ActionResult<Song>> DeleteSong(int id)
         {
+            List<CowriterSongRel> cowriterSongRels = _context.CowriterSongRels.Where(cs => cs.SongId == id).ToList();
+
+            if (cowriterSongRels.Count != 0)
+            {
+                foreach (CowriterSongRel cs in cowriterSongRels)
+                {
+                    _context.CowriterSongRels.Remove(cs);
+                    await _context.SaveChangesAsync();
+                }
+            }
             var song = await _context.Songs.FindAsync(id);
             if (song == null)
             {
