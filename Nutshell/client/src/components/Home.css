@@ -9,7 +9,15 @@
 
 .helloLogout {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+}
+
+.hello {
+    margin: 10px;
+}
+
+.logoutButton {
+    background: none !important;
 }
 
 .logoContainer {

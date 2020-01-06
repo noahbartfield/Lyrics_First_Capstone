@@ -28,7 +28,7 @@ class HomeView extends Component {
             <>
                 <div className="mainContainer">
                     <h1 className="homeView">Welcome, {this.props.user.username}</h1>
-                    <h2 className="homeView counter">You've written {this.state.dataWords.length} unique words in {this.props.songs.length} songs</h2>
+                    <h2 className="homeView counter">You've written <span className="bold">{this.state.dataWords.length}</span> unique words in <span className="bold">{this.props.songs.length}</span> songs</h2>
                 </div> 
             </>
         )

@@ -137,10 +137,10 @@ class Home extends Component {
           // width='medium'
           >
             <div className="helloLogout">
-              <div>
+              <div className="hello">
                 Hello {this.props.user.username}
               </div>
-              <Button onClick={this.props.logout}>Logout</Button>
+              <Button className="logoutButton"onClick={this.props.logout}>Logout</Button>
             </div>
             <nav>
               <span><Button className="catalogueListButton" onClick={this.showCatalogueOnClick}>Catalogue</Button></span>

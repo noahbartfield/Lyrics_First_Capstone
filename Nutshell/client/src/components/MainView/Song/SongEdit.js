@@ -22,6 +22,8 @@ class SongEdit extends Component {
         showConnectModal: false,
         rhymingWords: [],
         rhymingWordsB: [],
+        approximateRhymingWords: [],
+        approximateRhymingWordsB: [],
         lineArray: [],
         aaVisable: false,
         abVisable: false,
@@ -128,7 +130,7 @@ class SongEdit extends Component {
                     suggestions: filteredWordNames
                 });
             })
-    }, 2000);
+    }, 500);
 
     handleRhyming = debounce(() => {
         if (this.state.lyrics.includes("\n")) {
@@ -146,10 +148,11 @@ class SongEdit extends Component {
                     getAllRhymingWords(lineTwoBeforeWordArray[lastWordOfSecondToLastLineIndex]).then(rw => this.setState({ rhymingWordsB: rw, abVisable: true }))
                 } else {
                     this.setState({ rhymingWordsB: [] })
+                    this.setState({ approximateRhymingWordsB: [] })
                 }
             }
         }
-    }, 2000)
+    }, 1000)
 
     openConnectModal = () => this.setState({ showConnectModal: true })
     closeConnectModal = () => this.setState({ showConnectModal: false })
@@ -179,7 +182,8 @@ class SongEdit extends Component {
                     <div>
                         <Button className="saveButton ui massive" onClick={this.handleSubmit}><Icon name="save" /></Button>
                     </div>
-                    {user.username === this.state.writerName && <Modal onClose={this.closeConnectModal} onOpen={this.openConnectModal} open={this.state.showConnectModal} trigger={<Button className="showButton connectButton ui massive"><Icon name="user" /></Button>} closeIcon>
+                    {user.username === this.state.writerName && 
+                    <Modal className="ui tiny"onClose={this.closeConnectModal} onOpen={this.openConnectModal} open={this.state.showConnectModal} trigger={<Button className="showButton connectButton ui massive"><Icon name="user" /></Button>} closeIcon>
                         <AddCowriterModal
                             closeConnectModal={this.closeConnectModal}
                             songId={this.state.songId}

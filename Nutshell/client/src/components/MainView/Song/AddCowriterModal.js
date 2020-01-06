@@ -3,6 +3,7 @@ import { Link, Route } from 'react-router-dom';
 import { getListOfUsers, addCowriter } from '../../../API/cowriterManager';
 import { Button, Icon, Modal } from 'semantic-ui-react'
 import { debounce } from "debounce";
+import "./AddCowriterModal.css"
 
 class AddCowriterModal extends Component {
 
@@ -21,15 +22,16 @@ class AddCowriterModal extends Component {
     searchForFriend = (q) => {
         const user = JSON.parse(localStorage.getItem('user'))
         getListOfUsers(q.target.value).then(users => {
-            const cowriterNames = this.props.cowriters.map(cs => cs.username)
+            const cowriterNames = this.props.cowriters.map(cs => cs.userName)
+            console.log("cowriterNames", cowriterNames)
             const filteredUsers = users.filter(u => u.username !== user.username && !cowriterNames.includes(u.username))
             this.setState({ users: filteredUsers })
         })
     }
 
-    
+
     handleConnect = id => {
-        const cowriterSongRel = {songId: this.props.songId, userId: id}
+        const cowriterSongRel = { songId: this.props.songId, userId: id }
         addCowriter(cowriterSongRel)
             .then(() => this.props.findCowriters())
         this.props.closeConnectModal()
@@ -40,6 +42,7 @@ class AddCowriterModal extends Component {
             <>
                 <Modal.Header className="connectModal">Add Cowriter to "{this.props.title}"?</Modal.Header>
                 <input
+                    className="searchCowriters"
                     type="text"
                     required
                     onChange={this.handleFieldChange}
@@ -51,11 +54,13 @@ class AddCowriterModal extends Component {
                         console.log(user.id)
                         return (
                             <>
-                                <div key={Math.random()}>
+                                <div className="addCowriter">
                                     <div>
-                                    {user.username}
-                                </div>
-                                <Button onClick={() => this.handleConnect(user.id)}>Add</Button>
+                                        <span>
+                                            {user.username}
+                                        </span>
+                                        <Button className="addCowriterButton" onClick={() => this.handleConnect(user.id)}>Add</Button>
+                                    </div>
                                 </div>
                             </>
                         )
