@@ -1,9 +1,8 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
-import { getSongs, getSongById, deleteSong } from '../../../API/songManager';
+import React, { Component } from 'react';
+import { getSongById, deleteSong } from '../../../API/songManager';
 import { getAllWords, deleteWord } from '../../../API/wordManager';
 import { getCowriters, getSpecificUser } from '../../../API/cowriterManager';
-import { Button, Modal, Icon } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 import "./SongDetails.css"
 import { isEqual } from 'lodash'
 
@@ -118,7 +117,7 @@ class SongDetails extends Component {
                 })}
                 <p></p>
                 <Button className="editButton" onClick={() => { this.props.history.push(`/home/songs/${songId}/edit`) }}><Icon name="edit" /></Button>
-                {user.username == this.state.writerName &&
+                {user.username === this.state.writerName &&
                     <span>
                         {this.state.deleteVisable === false
                             ? <Button className="preDeleteSongButton" onClick={() => this.handlePreDeleteSong()}><Icon name="trash" /></Button>

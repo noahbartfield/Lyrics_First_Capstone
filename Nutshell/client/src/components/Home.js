@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
-import { getSongs, getSongById } from '../API/songManager';
-import { getWords, getWordById } from '../API/wordManager';
-import { getTitles, getTitleById } from '../API/titleManager';
+import { Link } from 'react-router-dom';
+import { getSongs } from '../API/songManager';
+import { getWords } from '../API/wordManager';
+import { getTitles } from '../API/titleManager';
 import { getReferences, getReferenceTypes } from '../API/referenceManager';
-import SideViews from './SideView/SideViews';
 import SongList from './SideView/SongList';
 import WordList from './SideView/WordList';
 import TitleList from './SideView/TitleList';
 import ReferenceTypeList from './SideView/ReferenceTypeList';
 import MainViews from './MainView/MainViews';
-import { Button, Header, Form, Icon, Sidebar, Menu } from 'semantic-ui-react';
+import { Button, Icon, Sidebar, Menu } from 'semantic-ui-react';
 import "./Home.css";
 
 class Home extends Component {

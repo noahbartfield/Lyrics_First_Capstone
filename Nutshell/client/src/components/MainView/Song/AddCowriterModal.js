@@ -1,8 +1,6 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
+import React, { Component } from 'react';
 import { getListOfUsers, addCowriter } from '../../../API/cowriterManager';
-import { Button, Icon, Modal } from 'semantic-ui-react'
-import { debounce } from "debounce";
+import { Button, Modal } from 'semantic-ui-react'
 import "./AddCowriterModal.css"
 
 class AddCowriterModal extends Component {

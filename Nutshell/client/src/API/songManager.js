@@ -1,5 +1,4 @@
 ﻿import { createAuthHeaders } from '../API/userManager';
-import { pathToFileURL } from 'url';
 
 const baseUrl = '/api/v1';
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { deleteCowriter } from '../../../API/cowriterManager';
-import { Button, Icon, Modal } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 import "./CowriterCard.css"
 
 

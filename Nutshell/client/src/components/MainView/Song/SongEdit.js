@@ -1,9 +1,8 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
-import { getSongs, getSongById, editSong } from '../../../API/songManager';
+import React, { Component } from 'react';
+import { getSongById, editSong } from '../../../API/songManager';
 import { deleteWord, createDataWord, getAllWords } from '../../../API/wordManager';
 import { getAllRhymingWords } from '../../../API/thirdPartyApiManager';
-import { getCowriters, getSpecificUser, deleteCowriter } from '../../../API/cowriterManager';
+import { getCowriters, getSpecificUser } from '../../../API/cowriterManager';
 import { Button, Icon, Modal } from 'semantic-ui-react'
 import { debounce } from "debounce";
 import "./SongEdit.css"
@@ -158,7 +157,6 @@ class SongEdit extends Component {
     closeConnectModal = () => this.setState({ showConnectModal: false })
 
     render() {
-        const songId = parseInt(this.props.match.params.songId)
         const user = JSON.parse(localStorage.getItem('user'))
         return (
             <>

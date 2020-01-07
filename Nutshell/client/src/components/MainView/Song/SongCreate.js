@@ -1,6 +1,5 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
-import { getSongs, getSongById, createSong } from '../../../API/songManager';
+import React, { Component } from 'react';
+import { createSong } from '../../../API/songManager';
 import { getAllRhymingWords } from '../../../API/thirdPartyApiManager';
 import { createDataWord } from '../../../API/wordManager';
 import { Button, Icon } from 'semantic-ui-react'

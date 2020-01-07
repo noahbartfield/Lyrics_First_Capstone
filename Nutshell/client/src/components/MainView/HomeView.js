@@ -1,8 +1,5 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
-import { Button, Icon, Modal } from 'semantic-ui-react'
+import React, { Component } from 'react';
 import { getDataWords } from "../../API/wordManager"
-import { getSongs } from "../../API/songManager"
 import "./HomeView.css"
 
 

@@ -11,3 +11,16 @@
     font-size: 20px;
     font-family: 'Roboto', sans-serif;
 }
+
+.editReferenceButton {
+    background: none !important;
+}
+
+.preDeleteReferenceButton {
+    background: none !important;
+}
+
+.deleteReferenceButton {
+    background: none !important;
+    color: red !important;
+}

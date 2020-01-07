@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { login } from '../API/userManager';
-import Header from './Header';
 
 class Login extends Component {
   state = {
