@@ -1,6 +1,5 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
-import { getReferences, getReferenceById, deleteReference } from '../../../API/referenceManager';
+import React, { Component } from 'react';
+import { getReferenceById, deleteReference } from '../../../API/referenceManager';
 import { Button, Icon, Modal } from 'semantic-ui-react'
 import "./ReferenceDetails.css"
 
@@ -11,7 +10,7 @@ class ReferenceDetails extends Component {
         name: "",
         url: "",
         typeOfReferenceId: 0,
-        showDeleteModal: false
+        deleteVisable: false
     }
 
     componentDidMount() {
@@ -35,8 +34,13 @@ class ReferenceDetails extends Component {
         this.props.history.push(`/home/lyricsFirst`)
     }
 
-    openDeleteModal = () => this.setState({ showDeleteModal: true })
-    closeDeleteModal = () => this.setState({ showDeleteModal: false })
+    handlePreDeleteReference = () => {
+        this.setState({ deleteVisable: true })
+    }
+
+    handleCancelDeleteReference = () => {
+        this.setState({ deleteVisable: false })
+    }
 
 
     render() {
@@ -47,14 +51,27 @@ class ReferenceDetails extends Component {
                     {this.state.name}
                 </div>
                 <div className="referenceUrl">
-                    <a target="_blank" href={this.state.url}>{this.state.url}</a>
+                    <a target="_blank" rel="noopener noreferrer" href={this.state.url}>{this.state.url}</a>
                 </div>
 
-                <Button className="deleteButton" onClick={() => { this.props.history.push(`/home/references/${referenceId}/edit`) }}><Icon name="edit" /></Button>
-                <Modal onClose={this.closeDeleteModal} onOpen={this.openDeleteModal} open={this.state.showDeleteModal} trigger={<Button className="deleteButton"><Icon name="trash alternate outline" /></Button>} closeIcon>
+                <Button className="editReferenceButton" onClick={() => { this.props.history.push(`/home/references/${referenceId}/edit`) }}><Icon name="edit" /></Button>
+                <span>
+                        {this.state.deleteVisable === false
+                            ? <Button className="preDeleteReferenceButton" onClick={() => this.handlePreDeleteReference()}><Icon name="trash" /></Button>
+                            :
+                            <>
+                                <span>
+                                    <Button className="preDeleteReferenceButton" onClick={() => this.handleCancelDeleteReference()}><Icon name="cancel" /></Button>
+                                </span>
+                                <span>
+                                    <Button className="deleteReferenceButton" onClick={() => this.handleDeleteReference(referenceId)}><Icon name="trash" /></Button>
+                                </span>
+                            </>}
+                    </span>
+                {/* <Modal onClose={this.closeDeleteModal} onOpen={this.openDeleteModal} open={this.state.showDeleteModal} trigger={<Button className="deleteButton"><Icon name="trash alternate outline" /></Button>} closeIcon>
                     <Modal.Header className="deleteModal">Delete "{this.state.name}"?</Modal.Header>
                     <Button attached onClick={() => this.handleDeleteReference(referenceId)}>Delete</Button>
-                </Modal>
+                </Modal> */}
             </>
         )
     }

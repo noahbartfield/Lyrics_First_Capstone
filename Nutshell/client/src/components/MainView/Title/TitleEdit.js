@@ -1,5 +1,4 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
+import React, { Component } from 'react';
 import { getTitleById, editTitle } from '../../../API/titleManager';
 import { Button, Icon } from 'semantic-ui-react'
 import "./TitleEdit.css"

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button, Icon, Accordion } from 'semantic-ui-react';
-import { getReferences, getReferenceTypes } from '../../API/referenceManager';
 import "./ReferenceTypeList.css"
 
 
@@ -44,7 +43,6 @@ class ReferenceList extends Component {
                                 }
                             });
 
-                            console.log(references)
                             return (
 
                                 <Accordion className="referenceTypeList" key={referenceType.id}>
@@ -58,7 +56,6 @@ class ReferenceList extends Component {
                                     </Accordion.Title>
                                     <Accordion.Content active={activeIndex === i}>
                                         {references.map(r => {
-                                            console.log(r)
                                             return (
                                                 <div className="referenceList" key={r.id}>
                                                     <Link

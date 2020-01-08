@@ -1,5 +1,4 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
+import React, { Component } from 'react';
 import { createWord } from '../../../API/wordManager';
 import { Button, Icon } from 'semantic-ui-react'
 import { getWordInformation } from '../../../API/thirdPartyApiManager'
@@ -42,7 +41,7 @@ class WordCreate extends Component {
                 if (w.entries.length > 0) {
                     console.log(w)
                     this.setState({definition: w.entries[0].lexemes[0].senses[0].definition})
-                    if (w.entries[0].lexemes[0].synonymSets != undefined){
+                    if (w.entries[0].lexemes[0].synonymSets !== undefined){
                         this.setState({synonyms: w.entries[0].lexemes[0].synonymSets[0].synonyms})
                     } else {
                         this.setState({synonyms: []})

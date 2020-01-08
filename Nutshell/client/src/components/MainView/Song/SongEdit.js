@@ -1,13 +1,16 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
-import { getSongs, getSongById, editSong } from '../../../API/songManager';
+import React, { Component } from 'react';
+import { getSongById, editSong } from '../../../API/songManager';
 import { deleteWord, createDataWord, getAllWords } from '../../../API/wordManager';
 import { getAllRhymingWords } from '../../../API/thirdPartyApiManager';
-import { addCowriter } from '../../../API/cowriterManager';
+import { getCowriters, getSpecificUser } from '../../../API/cowriterManager';
 import { Button, Icon, Modal } from 'semantic-ui-react'
 import { debounce } from "debounce";
 import "./SongEdit.css"
 import { getSuggestions } from "./GetSuggestionsFunc"
+import AddCowriterModal from './AddCowriterModal';
+import { isEqual } from 'lodash'
+import CowriterCard from './CowriterCard';
+
 
 class SongEdit extends Component {
 
@@ -18,15 +21,44 @@ class SongEdit extends Component {
         showConnectModal: false,
         rhymingWords: [],
         rhymingWordsB: [],
+        approximateRhymingWords: [],
+        approximateRhymingWordsB: [],
         lineArray: [],
         aaVisable: false,
         abVisable: false,
-        suggestions: []
+        suggestions: [],
+        cowriters: [],
+        writerName: "",
+        userId: "",
+        areYouSureVisable: false
     }
 
     componentDidMount() {
         const songId = parseInt(this.props.match.params.songId)
-        getSongById(songId).then(song => this.setState({ title: song.title, lyrics: song.lyrics, songId: songId }))
+        getSongById(songId).then(song => this.setState({ title: song.title, lyrics: song.lyrics, songId: songId, userId: song.userId }))
+            .then(() => this.findWriter()).then(() => this.findCowriters())
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const songId = parseInt(this.props.match.params.songId)
+        const oldPropSongId = parseInt(prevProps.match.params.songId)
+        const cowriterArray = this.state.cowriterNames
+        const oldCowriterArray = prevState.cowriterNames
+        const writerName = this.state.writerName
+        const oldWriterName = prevState.writerName
+        if (oldPropSongId !== songId) {
+            console.log("finding song in componentDidUpdate")
+            getSongById(songId).then(song => this.setState({ title: song.title, lyrics: song.lyrics, songId: songId, userId: song.userId }))
+                .then(() => this.findWriter()).then(() => this.findCowriters())
+        }
+        if (!isEqual(oldCowriterArray, cowriterArray)) {
+            console.log("finding cowriters in componentDidUpdate")
+            this.findCowriters()
+        }
+        if (!isEqual(oldWriterName, writerName)) {
+            console.log("finding writerName in componentDidUpdate")
+            this.findWriter()
+        }
     }
 
     handleFieldChange = event => {
@@ -34,6 +66,27 @@ class SongEdit extends Component {
         stateToChange[event.target.id] = event.target.value
         this.setState(stateToChange)
     }
+
+    findCowriters = () => {
+        const songId = parseInt(this.props.match.params.songId)
+        console.log(songId)
+        getCowriters(songId).then(cs => {
+            // const names = cs.map(csr => {
+            //     return csr.userName
+            // });
+            this.setState({ cowriters: cs })
+        })
+    }
+
+    findWriter = () => {
+        const songId = parseInt(this.props.match.params.songId)
+        console.log(songId)
+        getSpecificUser(this.state.userId).then(user => {
+            this.setState({ writerName: user.username })
+        })
+    }
+
+
 
     handleSubmit = event => {
         event.preventDefault()
@@ -53,7 +106,7 @@ class SongEdit extends Component {
         foundSong.lyrics = this.state.lyrics
         const lyricsWithoutLineBreaks = this.state.lyrics.replace(/\n/g, " ")
         const wordArray = lyricsWithoutLineBreaks.split(" ")
-        const wordSet = new Set(wordArray)       
+        const wordSet = new Set(wordArray)
         wordSet.forEach(word => {
             const newWord = {
                 name: word,
@@ -66,16 +119,6 @@ class SongEdit extends Component {
         })
     }
 
-    // handleConnect = id => {
-    //     addCowriter(id)
-    // }
-
-    // onChange = (event, { newValue }) => {
-    //     this.setState({
-    //         value: newValue
-    //     });
-    // };
-
     onSuggestionsFetchRequested = debounce(() => {
         const wordArray = this.state.lyrics.split(" ")
         const lastWordIndex = wordArray.length - 1
@@ -86,7 +129,7 @@ class SongEdit extends Component {
                     suggestions: filteredWordNames
                 });
             })
-    }, 2000);
+    }, 500);
 
     handleRhyming = debounce(() => {
         if (this.state.lyrics.includes("\n")) {
@@ -104,69 +147,90 @@ class SongEdit extends Component {
                     getAllRhymingWords(lineTwoBeforeWordArray[lastWordOfSecondToLastLineIndex]).then(rw => this.setState({ rhymingWordsB: rw, abVisable: true }))
                 } else {
                     this.setState({ rhymingWordsB: [] })
+                    this.setState({ approximateRhymingWordsB: [] })
                 }
             }
         }
-    }, 2000)
+    }, 1000)
 
     openConnectModal = () => this.setState({ showConnectModal: true })
     closeConnectModal = () => this.setState({ showConnectModal: false })
 
     render() {
-        const songId = parseInt(this.props.match.params.songId)
+        const user = JSON.parse(localStorage.getItem('user'))
         return (
             <>
                 <input className="songTitle" type="text" id="title" autoComplete="off" onChange={this.handleFieldChange} value={this.state.title}></input>
+                <p></p>
+                Written By:
+                    <span className="writer">
+                    {` ${this.state.writerName}*`}
+                </span>
+                {console.log("cowriter state", this.state.cowriters)}
+                {this.state.cowriters.map(c => {
+                    return <CowriterCard
+                        key={c.id}
+                        cowriter={c}
+                        findCowriters={this.findCowriters}
+                        writerName={this.state.writerName}
+                    />
+                })}
                 <p></p>
                 <div className="saveAndConnect">
                     <div>
                         <Button className="saveButton ui massive" onClick={this.handleSubmit}><Icon name="save" /></Button>
                     </div>
-                    <Modal onClose={this.closeConnectModal} onOpen={this.openConnectModal} open={this.state.showConnectModal} trigger={<Button className="showButton connectButton ui massive"><Icon name="user" /></Button>} closeIcon>
-                        <Modal.Header className="connectModal">Add Cowriter to "{this.state.title}"?</Modal.Header>
-                        {/* <Button attached onClick={() => this.handleConnect(songId)}>Add</Button> */}
-                    </Modal>
+                    {user.username === this.state.writerName && 
+                    <Modal className="ui tiny"onClose={this.closeConnectModal} onOpen={this.openConnectModal} open={this.state.showConnectModal} trigger={<Button className="showButton connectButton ui massive"><Icon name="user" /></Button>} closeIcon>
+                        <AddCowriterModal
+                            closeConnectModal={this.closeConnectModal}
+                            songId={this.state.songId}
+                            title={this.state.title}
+                            cowriters={this.state.cowriters}
+                            findCowriters={this.findCowriters}
+                        />
+                    </Modal>}
                 </div>
                 <div className="lyricsWithRhymes">
                     {this.state.rhymingWords &&
-                    <div>
-                        <p>A A</p>
-                        <div className="rhymingContainer">
-                            {this.state.rhymingWords.map(rw => {
-                                return (
-                                    <div key={Math.random()}>
-                                        {rw.word}
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>}
+                        <div>
+                            <p>A A</p>
+                            <div className="rhymingContainer">
+                                {this.state.rhymingWords.map(rw => {
+                                    return (
+                                        <div key={Math.random()}>
+                                            {rw.word}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>}
                     {this.state.rhymingWordsB &&
-                    <div>
-                        <p>A B</p>
-                        <div className="rhymingContainer">
-                            {this.state.rhymingWordsB.map(rw => {
-                                return (
-                                    <div key={Math.random()}>
-                                        {rw.word}
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>}
+                        <div>
+                            <p>A B</p>
+                            <div className="rhymingContainer">
+                                {this.state.rhymingWordsB.map(rw => {
+                                    return (
+                                        <div key={Math.random()}>
+                                            {rw.word}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>}
                     {this.state.suggestions &&
-                    <div>
-                        <p>My Words</p>
-                        <div className="rhymingContainer">
-                            {this.state.suggestions.map(s => {
-                                return (
-                                    <div key={Math.random()}>
-                                        {s}
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>}
+                        <div>
+                            <p>My Words</p>
+                            <div className="rhymingContainer">
+                                {this.state.suggestions.map(s => {
+                                    return (
+                                        <div key={Math.random()}>
+                                            {s}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>}
                     <div>
                         <textarea
                             className="songLyrics"

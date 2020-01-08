@@ -18,6 +18,15 @@
     background: none !important;
 }
 
-.deleteButton {
+.deleteSongButton {
     background: none !important;
+    color: red !important;
+    padding: 5px !important;
+    margin: 0px !important;
+}
+
+.preDeleteSongButton {
+    background: none !important;
+    padding: 5px !important;
+    margin: 0px !important;
 }

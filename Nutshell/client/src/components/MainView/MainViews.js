@@ -109,6 +109,9 @@ export default class MainViews extends Component {
           <Route exact path="/home/lyricsFirst" render={(props) => {
             return <HomeView
               songs={this.props.songs}
+              titles={this.props.titles}
+              references={this.props.references}
+              words={this.props.words}
               user={this.props.user}
               {...props} />
           }} />

@@ -30,7 +30,13 @@ namespace Capstone.Controllers.V1
         public async Task<ActionResult<IEnumerable<Song>>> GetSongs()
         {
             var userId = HttpContext.GetUserId();
-            return await _context.Songs.Where(s => s.InProgress == true && s.UserId == userId).OrderBy(s => s.Title).ToListAsync();
+            List<Song> songs = await _context.Songs.Where(s => s.InProgress == true && s.UserId == userId).OrderBy(s => s.Title).ToListAsync();
+            List<CowriterSongRel> cowriterSongRels = await _context.CowriterSongRels.Include(cs => cs.Song).Where(cs => cs.UserId == userId).ToListAsync();
+            foreach (CowriterSongRel cs in cowriterSongRels)
+            {
+                songs.Add(cs.Song);
+            }
+            return songs;
         }
 
         // GET: api/Songs/5
@@ -55,10 +61,18 @@ namespace Capstone.Controllers.V1
             {
                 return BadRequest();
             }
-
+            
             var userId = HttpContext.GetUserId();
-            song.UserId = userId;
-            _context.Entry(song).State = EntityState.Modified;
+
+            if (song.UserId == userId)
+            {
+                song.UserId = userId;
+                _context.Entry(song).State = EntityState.Modified;
+            }
+            else
+            {
+                _context.Entry(song).State = EntityState.Modified;
+            }
 
             try
             {
@@ -102,6 +116,16 @@ namespace Capstone.Controllers.V1
         [HttpDelete(Api.Songs.DeleteSong)]
         public async Task<ActionResult<Song>> DeleteSong(int id)
         {
+            List<CowriterSongRel> cowriterSongRels = _context.CowriterSongRels.Where(cs => cs.SongId == id).ToList();
+
+            if (cowriterSongRels.Count != 0)
+            {
+                foreach (CowriterSongRel cs in cowriterSongRels)
+                {
+                    _context.CowriterSongRels.Remove(cs);
+                    await _context.SaveChangesAsync();
+                }
+            }
             var song = await _context.Songs.FindAsync(id);
             if (song == null)
             {

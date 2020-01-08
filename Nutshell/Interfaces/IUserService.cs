@@ -17,5 +17,6 @@ namespace Capstone.Interfaces
         Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken);
 
         Task<ApplicationUser> GetUserAsync(string id);
+
     }
 }

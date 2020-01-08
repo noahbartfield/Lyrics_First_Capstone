@@ -1,5 +1,4 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
+import React, { Component } from 'react';
 import { getWordById, editWord } from '../../../API/wordManager';
 import { Button, Icon } from 'semantic-ui-react'
 import "./WordEdit.css"

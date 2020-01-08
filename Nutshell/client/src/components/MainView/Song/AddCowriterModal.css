@@ -1,0 +1,16 @@
+.connectModal {
+    font-family: 'Playfair Display', serif !important;
+    color: #5d5d5d !important;
+}
+
+.searchCowriters {
+    margin: 10px;
+}
+
+.addCowriter {
+    padding: 10px;
+}
+
+.addCowriterButton {
+    background: none !important;
+}

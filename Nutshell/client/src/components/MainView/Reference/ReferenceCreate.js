@@ -1,5 +1,4 @@
-import React, { Component, FormattedMessage } from 'react';
-import { Link, Route } from 'react-router-dom';
+import React, { Component } from 'react';
 import { createReference } from '../../../API/referenceManager';
 import { Button, Icon } from 'semantic-ui-react'
 import "./ReferenceCreate.css"

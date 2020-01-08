@@ -25,3 +25,16 @@
     font-family: 'Roboto', sans-serif;
     padding-left: 20px
 }
+
+.editWordButton {
+    background: none !important;
+}
+
+.preDeleteWordButton {
+    background: none !important;
+}
+
+.deleteWordButton {
+    background: none !important;
+    color: red !important;
+}

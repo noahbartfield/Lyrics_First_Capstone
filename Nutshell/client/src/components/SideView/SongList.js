@@ -1,7 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
-import { createSong } from '../../API/songManager';
-import Song from '../MainView/Song/SongDetails'
+import { Link } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react'
 import "./SongList.css"
 

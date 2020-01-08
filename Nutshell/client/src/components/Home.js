@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { getSongs, getSongById } from '../API/songManager';
-import { getWords, getWordById } from '../API/wordManager';
-import { getTitles, getTitleById } from '../API/titleManager';
+import { Link } from 'react-router-dom';
+import { getSongs } from '../API/songManager';
+import { getWords } from '../API/wordManager';
+import { getTitles } from '../API/titleManager';
 import { getReferences, getReferenceTypes } from '../API/referenceManager';
-import SideViews from './SideView/SideViews';
 import SongList from './SideView/SongList';
 import WordList from './SideView/WordList';
 import TitleList from './SideView/TitleList';
 import ReferenceTypeList from './SideView/ReferenceTypeList';
 import MainViews from './MainView/MainViews';
-import { Button, Header, Form, Icon, Sidebar, Menu } from 'semantic-ui-react';
+import { Button, Icon, Sidebar, Menu } from 'semantic-ui-react';
 import "./Home.css";
 
 class Home extends Component {
@@ -119,9 +119,11 @@ class Home extends Component {
               ? "delete"
               : "bars"} />
           </Button>
-          <div className="logoContainer">
+          <Link to={'/home/lyricsfirst'}>
+            <div className="logoContainer">
               <div className="logo">Lyrics | First</div>
             </div>
+          </Link>
         </nav>
         < Sidebar.Pushable >
           <Sidebar
@@ -134,10 +136,10 @@ class Home extends Component {
           // width='medium'
           >
             <div className="helloLogout">
-              <div>
+              <div className="hello">
                 Hello {this.props.user.username}
               </div>
-              <Button onClick={this.props.logout}>Logout</Button>
+              <Button className="logoutButton"onClick={this.props.logout}>Logout</Button>
             </div>
             <nav>
               <span><Button className="catalogueListButton" onClick={this.showCatalogueOnClick}>Catalogue</Button></span>

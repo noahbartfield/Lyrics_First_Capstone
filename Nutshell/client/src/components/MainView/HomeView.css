@@ -3,6 +3,8 @@
 }
 
 .homeView {
+    padding-left: 100px;
+    padding-right: 100px;
     font-weight: 900;
     padding-top: 100px;
     margin-top: 50px;
@@ -14,4 +16,15 @@
 .counter {
     font-size: 30px;
     font-weight: 100;
+}
+
+.otherStats {
+    font-weight: 100;
+    padding-top: 10px;
+    margin-top: 5px;
+    font-size: 30px;
+}
+
+.bold {
+    font-weight: 900;
 }
