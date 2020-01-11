@@ -12,9 +12,9 @@ export const getSuggestions = value => {
             const inputLength = inputValue.length;
             const filteredWords = words[0].filter(word => word.name.toLowerCase().slice(0, inputLength) === inputValue);
             const filteredWordNames = filteredWords.map(word => {
-                return word.name
+                return word
             });
-            console.log(filteredWordNames)
+            console.log("filteredWordNames", filteredWordNames)
             return inputLength === 0 ? [] : filteredWordNames
         })
 };

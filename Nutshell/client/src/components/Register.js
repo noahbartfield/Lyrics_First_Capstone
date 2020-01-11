@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { register } from '../API/userManager';
+import "./LoginRegister.css"
 
 class Register extends Component {
   state = {
@@ -38,7 +39,7 @@ class Register extends Component {
 
   render() {
     return (
-      <form onSubmit={this.submit}>
+      <form className="body" onSubmit={this.submit}>
         <h1>Register</h1>
         <ul>
           {

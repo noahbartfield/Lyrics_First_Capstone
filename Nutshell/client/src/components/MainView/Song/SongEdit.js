@@ -3,7 +3,7 @@ import { getSongById, editSong } from '../../../API/songManager';
 import { deleteWord, createDataWord, getAllWords } from '../../../API/wordManager';
 import { getAllRhymingWords } from '../../../API/thirdPartyApiManager';
 import { getCowriters, getSpecificUser } from '../../../API/cowriterManager';
-import { Button, Icon, Modal } from 'semantic-ui-react'
+import { Button, Icon, Modal, Popup } from 'semantic-ui-react'
 import { debounce } from "debounce";
 import "./SongEdit.css"
 import { getSuggestions } from "./GetSuggestionsFunc"
@@ -71,9 +71,6 @@ class SongEdit extends Component {
         const songId = parseInt(this.props.match.params.songId)
         console.log(songId)
         getCowriters(songId).then(cs => {
-            // const names = cs.map(csr => {
-            //     return csr.userName
-            // });
             this.setState({ cowriters: cs })
         })
     }
@@ -125,8 +122,9 @@ class SongEdit extends Component {
         const lastWord = wordArray[lastWordIndex]
         getSuggestions(lastWord)
             .then(filteredWordNames => {
+                console.log(filteredWordNames)
                 this.setState({
-                    suggestions: filteredWordNames
+                    suggestions: [this.state.suggestions, ...filteredWordNames]
                 });
             })
     }, 500);
@@ -160,7 +158,7 @@ class SongEdit extends Component {
         const user = JSON.parse(localStorage.getItem('user'))
         return (
             <>
-                <input className="songTitle" type="text" id="title" autoComplete="off" onChange={this.handleFieldChange} value={this.state.title}></input>
+                <input className="songTitle" type="text" id="title" autoComplete="off" autoFocus onChange={this.handleFieldChange} value={this.state.title}></input>
                 <p></p>
                 Written By:
                     <span className="writer">
@@ -180,16 +178,16 @@ class SongEdit extends Component {
                     <div>
                         <Button className="saveButton ui massive" onClick={this.handleSubmit}><Icon name="save" /></Button>
                     </div>
-                    {user.username === this.state.writerName && 
-                    <Modal className="ui tiny"onClose={this.closeConnectModal} onOpen={this.openConnectModal} open={this.state.showConnectModal} trigger={<Button className="showButton connectButton ui massive"><Icon name="user" /></Button>} closeIcon>
-                        <AddCowriterModal
-                            closeConnectModal={this.closeConnectModal}
-                            songId={this.state.songId}
-                            title={this.state.title}
-                            cowriters={this.state.cowriters}
-                            findCowriters={this.findCowriters}
-                        />
-                    </Modal>}
+                    {user.username === this.state.writerName &&
+                        <Modal className="ui tiny" onClose={this.closeConnectModal} onOpen={this.openConnectModal} open={this.state.showConnectModal} trigger={<Button className="showButton connectButton ui massive"><Icon name="user" /></Button>} closeIcon>
+                            <AddCowriterModal
+                                closeConnectModal={this.closeConnectModal}
+                                songId={this.state.songId}
+                                title={this.state.title}
+                                cowriters={this.state.cowriters}
+                                findCowriters={this.findCowriters}
+                            />
+                        </Modal>}
                 </div>
                 <div className="lyricsWithRhymes">
                     {this.state.rhymingWords &&
@@ -224,9 +222,13 @@ class SongEdit extends Component {
                             <div className="rhymingContainer">
                                 {this.state.suggestions.map(s => {
                                     return (
-                                        <div key={Math.random()}>
-                                            {s}
-                                        </div>
+                                        <Popup
+                                            key={Math.random()}
+                                            content={s.definition}
+                                            trigger={<div key={Math.random()}>
+                                                {s.name}
+                                            </div>}
+                                        />
                                     )
                                 })}
                             </div>

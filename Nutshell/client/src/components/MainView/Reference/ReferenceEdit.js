@@ -41,7 +41,7 @@ class ReferenceEdit extends Component {
     render() {
         return (
             <>
-                <input autoComplete="off" className="referenceNameEdit" type="text" id="name" onChange={this.handleFieldChange} value={this.state.name}></input>
+                <input autoComplete="off" className="referenceNameEdit" type="text" id="name" autoFocus onChange={this.handleFieldChange} value={this.state.name}></input>
                 <p></p>
                 <input autoComplete="off" className="referenceUrlEdit" type="text" id="url" onChange={this.handleFieldChange} value={this.state.url}></input>
                 <p></p>

@@ -34,7 +34,7 @@ class ReferenceCreate extends Component {
     render() {
         return (
             <>
-                <input className="referenceNameCreate" type="text" id="name" placeholder="new reference" autoComplete="off" onChange={this.handleFieldChange} value={this.state.name}></input>
+                <input className="referenceNameCreate" type="text" id="name" placeholder="new reference" autoComplete="off" autoFocus onChange={this.handleFieldChange} value={this.state.name}></input>
                 <p></p>
                 <input className="referenceUrlCreate" type="text" id="url" placeholder="new url" autoComplete="off" onChange={this.handleFieldChange} value={this.state.url}></input>
                 <p></p>

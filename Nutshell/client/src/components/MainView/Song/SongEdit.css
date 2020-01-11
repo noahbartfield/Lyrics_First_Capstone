@@ -10,6 +10,10 @@
     color: #5d5d5d;
 }
 
+.songTitle:focus {
+    color: #8d8d8d;
+}
+
 .songLyrics {
     resize: none;
 }

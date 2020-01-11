@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { login } from '../API/userManager';
+import "./LoginRegister.css"
 
 class Login extends Component {
   state = {
@@ -34,7 +35,7 @@ class Login extends Component {
   render() {
     return (
       <>
-      <form onSubmit={this.submit}>
+      <form className="body" onSubmit={this.submit}>
         <h1>Login</h1>
         <ul>
           {

@@ -30,7 +30,7 @@ class TitleCreate extends Component {
     render() {
         return (
             <>
-                <input className="titleNameCreate" type="text" id="name" placeholder="new title" autoComplete="off" onChange={this.handleFieldChange} value={this.state.name}></input>
+                <input className="titleNameCreate" type="text" id="name" placeholder="new title" autoComplete="off" autoFocus onChange={this.handleFieldChange} value={this.state.name}></input>
                 <p></p>
                 <Button className="searchButton ui massive" onClick={this.handleSubmit}><Icon name="save"/></Button>
             </>
