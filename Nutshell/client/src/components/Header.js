@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 function Header(props) {
   return (
     <nav className="header">
+    <div>Lyrics | First</div>
       <ul className="nav-items">
         {
           !props.user && (

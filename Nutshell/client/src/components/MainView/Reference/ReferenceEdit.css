@@ -12,6 +12,10 @@
     margin-bottom: 8px;
 }
 
+.referenceNameEdit:focus {
+    color: #8d8d8d;
+}
+
 .referenceUrlEdit {
     height: 100px;
     width: 80%;
@@ -22,6 +26,10 @@
     outline: none;
     font-family: 'Roboto', sans-serif;
     color: #5d5d5d;
+}
+
+.referenceUrlEdit:focus {
+    color: #8d8d8d;
 }
 
 .saveButton {

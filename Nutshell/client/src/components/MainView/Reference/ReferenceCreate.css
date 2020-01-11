@@ -12,6 +12,10 @@
     margin-bottom: 8px;
 }
 
+.referenceNameCreate:focus {
+    color: #8d8d8d;
+}
+
 .referenceUrlCreate {
     text-align: center;
     width: 45%;

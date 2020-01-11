@@ -35,7 +35,6 @@ class WordCreate extends Component {
     }
     
     handleDefinitionSearch = debounce(event => {
-        event.preventDefault()
         if (this.state.name.length > 0) {
             getWordInformation(this.state.name).then(w => {
                 if (w.entries.length > 0) {
@@ -53,12 +52,12 @@ class WordCreate extends Component {
                 }
             })
         }
-    }, 2000)
+    }, 1200)
 
     render() {
         return (
             <>
-                <input className="wordNameCreate" type="text" id="name" placeholder="new word" autoComplete="off" onChange={this.handleFieldChange} onKeyUp={this.handleDefinitionSearch} value={this.state.name}></input>
+                <input className="wordNameCreate" type="text" id="name" placeholder="new word" autoComplete="off" autoFocus onChange={this.handleFieldChange} onKeyUp={this.handleDefinitionSearch} value={this.state.name}></input>
                 <p></p>
                 <Button className="searchButton ui massive" onClick={this.handleSubmit}><Icon name="save"/></Button>
                 <p></p>

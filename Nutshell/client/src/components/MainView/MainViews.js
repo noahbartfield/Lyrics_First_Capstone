@@ -34,12 +34,15 @@ export default class MainViews extends Component {
             return <SongEdit
               key={this.props.songs.id}
               songs={this.props.songs}
+              words={this.props.words}
               updateSongs={this.props.updateSongs}
+              updateWords={this.props.updateWords}
               {...props} />
           }} />
           <Route exact path="/home/songs/create" render={(props) => {
             return <SongCreate
               songs={this.props.songs}
+              words={this.props.words}
               updateSongs={this.props.updateSongs}
               updateWords={this.props.updateWords}
               {...props} />

@@ -34,7 +34,7 @@ class WordEdit extends Component {
     render() {
         return (
             <>
-                <input className="wordNameEdit" type="text" id="name" onChange={this.handleFieldChange} value={this.state.name}></input>
+                <input className="wordNameEdit" type="text" id="name" autoFocus onChange={this.handleFieldChange} value={this.state.name}></input>
                 <p></p>
                     <Button className="saveButton ui massive" onClick={this.handleSubmit}><Icon name="save"/></Button>
                 <div>

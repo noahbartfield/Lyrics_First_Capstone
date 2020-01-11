@@ -37,6 +37,7 @@ class Home extends Component {
     getWords()
       .then(words => {
         this.setState({ words: words });
+        console.log("updated words", this.state.words)
       });
   }
 

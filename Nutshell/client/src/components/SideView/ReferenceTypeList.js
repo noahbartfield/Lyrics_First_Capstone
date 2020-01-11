@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button, Icon, Accordion } from 'semantic-ui-react';
 import "./ReferenceTypeList.css"
 
-
-
-//Rework this file (copy of Home.js) to do crud functionality on songs.
-
 class ReferenceList extends Component {
 
     state = {

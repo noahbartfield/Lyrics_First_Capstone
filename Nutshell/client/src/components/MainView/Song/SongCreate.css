@@ -12,6 +12,10 @@
     margin-bottom: 8px;
 }
 
+.songTitleCreate:focus {
+    color: #8d8d8d;
+}
+
 .songLyricsCreate {
     resize: none;
     font-family: 'Roboto', sans-serif;

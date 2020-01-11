@@ -12,6 +12,10 @@
     margin-bottom: 8px;
 }
 
+.wordNameEdit:focus {
+    color: #8d8d8d;
+}
+
 .definitionContainerEdit {
     display: flex;
     justify-content: center;

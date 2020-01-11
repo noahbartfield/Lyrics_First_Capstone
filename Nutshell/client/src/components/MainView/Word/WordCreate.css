@@ -12,6 +12,10 @@
     margin-bottom: 8px;
 }
 
+.wordNameCreate:focus {
+    color: #8d8d8d;
+}
+
 .definitionContainerCreate {
     display: flex;
     justify-content: center;
