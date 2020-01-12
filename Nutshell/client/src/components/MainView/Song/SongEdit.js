@@ -46,6 +46,8 @@ class SongEdit extends Component {
         const oldCowriterArray = prevState.cowriterNames
         const writerName = this.state.writerName
         const oldWriterName = prevState.writerName
+        const wordArray = this.props.words
+        const oldWordArray = prevProps.words
         if (oldPropSongId !== songId) {
             console.log("finding song in componentDidUpdate")
             getSongById(songId).then(song => this.setState({ title: song.title, lyrics: song.lyrics, songId: songId, userId: song.userId }))
@@ -58,6 +60,10 @@ class SongEdit extends Component {
         if (!isEqual(oldWriterName, writerName)) {
             console.log("finding writerName in componentDidUpdate")
             this.findWriter()
+        }
+        if (!isEqual(oldWordArray, wordArray)) {
+            console.log("updating words in componentDidUpdate")
+            this.props.updateWords()
         }
     }
 

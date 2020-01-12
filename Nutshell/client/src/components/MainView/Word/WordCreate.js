@@ -14,12 +14,14 @@ class WordCreate extends Component {
         synonyms: []
     }
 
+    //Used onChange for Name, Definition, and Synonyms
     handleFieldChange = event => {
         const stateToChange = {}
         stateToChange[event.target.id] = event.target.value
         this.setState(stateToChange)
     }
 
+    //Used onClick for Save Button
     handleSubmit = event => {
         event.preventDefault()
         const newWord = {
@@ -33,6 +35,7 @@ class WordCreate extends Component {
             this.props.history.push(`/home/words/${w[0].id}`)
         })
     }
+    
     
     handleDefinitionSearch = debounce(event => {
         if (this.state.name.length > 0) {

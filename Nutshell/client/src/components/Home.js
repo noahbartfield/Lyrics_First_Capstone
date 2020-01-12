@@ -37,7 +37,6 @@ class Home extends Component {
     getWords()
       .then(words => {
         this.setState({ words: words });
-        console.log("updated words", this.state.words)
       });
   }
 
@@ -70,6 +69,7 @@ class Home extends Component {
     this.updateReferenceTypes()
   }
 
+  //Show or Hide sidebar
   handleClick = () => {
     this.setState({ visible: !this.state.visible })
   }
@@ -134,7 +134,6 @@ class Home extends Component {
             vertical
             direction='left'
             visible={visible}
-          // width='medium'
           >
             <div className="helloLogout">
               <div className="hello">
@@ -174,7 +173,6 @@ class Home extends Component {
             />}
           </Sidebar>
           <Sidebar.Pusher onClick={this.state.visible === true ? this.handleClick : undefined}>
-
             <div className="makeMainBig"></div>
             <MainViews
               user={this.props.user}

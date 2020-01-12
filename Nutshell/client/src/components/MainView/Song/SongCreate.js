@@ -23,6 +23,14 @@ class SongCreate extends Component {
         suggestions: []
     }
 
+    componentDidUpdate(prevProps) {
+        const wordArray = this.props.words
+        const oldWordArray = prevProps.words
+        if (!isEqual(oldWordArray, wordArray)) {
+            this.props.updateWords()
+        }
+    }
+
     handleFieldChange = evt => {
         const stateToChange = {}
         stateToChange[evt.target.id] = evt.target.value
@@ -64,7 +72,7 @@ class SongCreate extends Component {
                     suggestions: [this.state.suggestions, ...filteredWordNames]
                 });
             })
-    }, 2000);
+    }, 500);
 
     handleRhyming = debounce(event => {
         if (this.state.lyrics.includes("\n")) {
